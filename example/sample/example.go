@@ -19,6 +19,7 @@ func initToken() {
 	resp, err := c.GetPublicAccessToken()
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
 	Token = resp.Data.AccessToken
@@ -29,6 +30,7 @@ func CreateClosedVA() {
 	resp, err := c.CreateClosedVA(params)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 	fmt.Println(resp)
 }
@@ -38,6 +40,7 @@ func CreateOpenVA() {
 	resp, err := c.CreateOpenVA(params)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 	fmt.Println(resp)
 }
@@ -47,6 +50,7 @@ func CreateQRIS() {
 	resp, err := c.CreateQRIS(params)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 	fmt.Println(resp)
 }
@@ -56,6 +60,7 @@ func CreatePaymentLink() {
 	resp, err := c.CreatePaymentLink(params)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 	fmt.Println(resp)
 }
@@ -65,6 +70,7 @@ func CreateEwallet() {
 	resp, err := c.CreateEwallet(params)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 	fmt.Println(resp)
 }
@@ -74,6 +80,7 @@ func CreateBCAUniqueCode() {
 	resp, err := c.CreateBCAUniqueCode(params)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 	fmt.Println(resp)
 }
