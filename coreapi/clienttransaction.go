@@ -2,6 +2,7 @@ package coreapi
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -16,9 +17,13 @@ func (c *Client) GetPublicAccessToken() (*Response[TokenResponseData], *onebrick
 		ClientID:     c.ClientID,
 		ClientSecret: c.ClientSecret,
 	}
+	authString := fmt.Sprintf("%s:%s", tokenRequest.ClientID, tokenRequest.ClientSecret)
+	encodedAuthString := base64.StdEncoding.EncodeToString([]byte(authString))
+
 	headers := make([]map[string]string, 0)
 	headers = append(headers, map[string]string{"username": tokenRequest.ClientID})
 	headers = append(headers, map[string]string{"password": tokenRequest.ClientSecret})
+	headers = append(headers, map[string]string{"Authorization": "Basic " + encodedAuthString})
 
 	err := c.HttpClient.Call(
 		http.MethodGet,
