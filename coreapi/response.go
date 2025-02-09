@@ -1,9 +1,5 @@
 package coreapi
 
-import (
-	"time"
-)
-
 type StatusEnum string
 
 var (
@@ -32,10 +28,10 @@ type Response[T any] struct {
 }
 
 type TokenResponseData struct {
-	Message     string    `json:"message"`
-	AccessToken string    `json:"accessToken"`
-	IssuedAt    time.Time `json:"issuedAt"`
-	ExpiresAt   time.Time `json:"expiresAt"`
+	Message     string        `json:"message"`
+	AccessToken string        `json:"accessToken"`
+	IssuedAt    BrickDateTime `json:"issuedAt"`
+	ExpiresAt   BrickDateTime `json:"expiresAt"`
 }
 
 type OpenVAResponseData struct {
@@ -56,60 +52,60 @@ type OpenVAStatusResponseData struct {
 }
 
 type CloseVAResponseData struct {
-	ID            string    `json:"id"`
-	Type          string    `json:"type"`
-	Amount        float64   `json:"amount"`
-	Description   string    `json:"description"`
-	CreatedAt     time.Time `json:"createdAt"`
-	ExpiredAt     time.Time `json:"expiredAt"`
-	Status        string    `json:"status"`
-	BankShortCode string    `json:"bankShortCode"`
-	ReferenceId   string    `json:"referenceId"`
-	DisplayName   string    `json:"displayName"`
-	AccountNo     string    `json:"accountNo"`
+	ID            string        `json:"id"`
+	Type          string        `json:"type"`
+	Amount        float64       `json:"amount"`
+	Description   string        `json:"description"`
+	CreatedAt     BrickDateTime `json:"createdAt"`
+	ExpiredAt     BrickDateTime `json:"expiredAt"`
+	Status        string        `json:"status"`
+	BankShortCode string        `json:"bankShortCode"`
+	ReferenceId   string        `json:"referenceId"`
+	DisplayName   string        `json:"displayName"`
+	AccountNo     string        `json:"accountNo"`
 }
 type CloseVAStatusResponseData struct {
-	ID            string     `json:"id"`
-	Type          string     `json:"type"`
-	Amount        float64    `json:"amount"`
-	Description   string     `json:"description"`
-	CreatedAt     time.Time  `json:"createdAt"`
-	ExpiredAt     time.Time  `json:"expiredAt"`
-	BankShortCode string     `json:"bankShortCode"`
-	ReferenceId   string     `json:"referenceId"`
-	DisplayName   string     `json:"displayName"`
-	AccountNo     string     `json:"accountNo"`
-	Status        StatusEnum `json:"status"`
+	ID            string        `json:"id"`
+	Type          string        `json:"type"`
+	Amount        float64       `json:"amount"`
+	Description   string        `json:"description"`
+	CreatedAt     BrickDateTime `json:"createdAt"`
+	ExpiredAt     BrickDateTime `json:"expiredAt"`
+	BankShortCode string        `json:"bankShortCode"`
+	ReferenceId   string        `json:"referenceId"`
+	DisplayName   string        `json:"displayName"`
+	AccountNo     string        `json:"accountNo"`
+	Status        StatusEnum    `json:"status"`
 }
 type DynamicQRISResponseData struct {
-	ID          string    `json:"id"`
-	ReferenceId string    `json:"referenceId"`
-	Amount      float64   `json:"amount"`
-	CreatedAt   time.Time `json:"createdAt"`
-	ExpiredAt   time.Time `json:"expiredAt"`
-	QRData      string    `json:"qrData"`
+	ID          string        `json:"id"`
+	ReferenceId string        `json:"referenceId"`
+	Amount      float64       `json:"amount"`
+	CreatedAt   BrickDateTime `json:"createdAt"`
+	ExpiredAt   BrickDateTime `json:"expiredAt"`
+	QRData      string        `json:"qrData"`
 }
 type DynamicQRISStatusResponseData struct {
-	ID          string    `json:"id"`
-	ReferenceId string    `json:"referenceId"`
-	Amount      float64   `json:"amount"`
-	Status      string    `json:"status"`
-	QRData      string    `json:"qrData"`
-	PaidAt      time.Time `json:"paidAt"`
+	ID          string        `json:"id"`
+	ReferenceId string        `json:"referenceId"`
+	Amount      float64       `json:"amount"`
+	Status      string        `json:"status"`
+	QRData      string        `json:"qrData"`
+	PaidAt      BrickDateTime `json:"paidAt"`
 }
 type DynamicQRISCancelResponseData struct {
-	Message     string    `json:"message"`
-	ID          string    `json:"id"`
-	ReferenceId string    `json:"referenceId"`
-	CancelledAt time.Time `json:"cancelledAt"`
+	Message     string        `json:"message"`
+	ID          string        `json:"id"`
+	ReferenceId string        `json:"referenceId"`
+	CancelledAt BrickDateTime `json:"cancelledAt"`
 }
 
 type PaymentLinkResponseData struct {
-	PaymentLinkPath string    `json:"paymentLinkPath"`
-	ExpiredAt       time.Time `json:"expiredAt"`
-	Amount          float64   `json:"amount"`
-	ReferenceId     string    `json:"referenceId"`
-	Status          string    `json:"status"`
+	PaymentLinkPath string        `json:"paymentLinkPath"`
+	ExpiredAt       BrickDateTime `json:"expiredAt"`
+	Amount          float64       `json:"amount"`
+	ReferenceId     string        `json:"referenceId"`
+	Status          string        `json:"status"`
 }
 type BcaUqniqueCodeResponseData struct {
 	Message       string  `json:"message"`
@@ -122,12 +118,12 @@ type BcaUqniqueCodeResponseData struct {
 	AmountUnique  float64 `json:"amountUnique"`
 }
 type EwalletResponseData struct {
-	Message     string    `json:"message"`
-	ID          string    `json:"id"`
-	ReferenceId string    `json:"referenceId"`
-	Amount      float64   `json:"amount"`
-	Status      string    `json:"status"`
-	EwalletCode string    `json:"ewalletCode"`
-	RedirectURL string    `json:"redirectUrl"`
-	ExpiredAt   time.Time `json:"expiredAt"`
+	Message     string        `json:"message"`
+	ID          string        `json:"id"`
+	ReferenceId string        `json:"referenceId"`
+	Amount      float64       `json:"amount"`
+	Status      string        `json:"status"`
+	EwalletCode string        `json:"ewalletCode"`
+	RedirectURL string        `json:"redirectUrl"`
+	ExpiredAt   BrickDateTime `json:"expiredAt"`
 }

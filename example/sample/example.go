@@ -82,10 +82,10 @@ func main() {
 	c.New(ClientID, ClientSecret, onebrick.Sandbox)
 	initToken()
 
-	CreateClosedVA()
-	CreateOpenVA()
-	CreateQRIS()
-	CreatePaymentLink()
-	CreateEwallet()
-	CreateBCAUniqueCode()
+	// CreateClosedVA()
+	// CreateOpenVA()
+	// CreateQRIS()
+	// CreatePaymentLink()
+	// CreateEwallet()
+	// CreateBCAUniqueCode()
 }
