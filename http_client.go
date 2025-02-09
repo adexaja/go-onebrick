@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -13,7 +12,7 @@ import (
 )
 
 type HttpClient interface {
-	Call(method string, url string, apiKey *string, options *ConfigOptions, body io.Reader, result interface{}) *Error
+	Call(method string, url string, publicAaccessToken string, options *ConfigOptions, body io.Reader, result interface{}) *Error
 }
 
 // HttpClientImplementation : this is for midtrans HttpClient Implementation
@@ -22,14 +21,14 @@ type HttpClientImplementation struct {
 	Logger     LoggerInterface
 }
 
-// Call the Midtrans API at specific `path` using the specified HTTP `method`. The result will be
+// Call the Onebrick API at specific `path` using the specified HTTP `method`. The result will be
 // given to `result` if there is no error. If any error occurred, the return of this function is the `midtrans.Error`
 // itself, otherwise nil.
-func (c *HttpClientImplementation) Call(method string, url string, apiKey *string, options *ConfigOptions, body io.Reader, result interface{}) *Error {
+func (c *HttpClientImplementation) Call(method string, url string, publicAaccessToken string, options *ConfigOptions, body io.Reader, result interface{}) *Error {
 	// NewRequest is used by Call to generate an http.Request.
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
-		c.Logger.Error("Cannot create Midtrans request: %v", err)
+		c.Logger.Error("Cannot create Onebrick request: %v", err)
 		return &Error{
 			Message:  fmt.Sprintf("Error Request creation failed: %s", err.Error()),
 			RawError: err,
@@ -43,30 +42,10 @@ func (c *HttpClientImplementation) Call(method string, url string, apiKey *strin
 	}
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("User-Agent", "Midtrans-Go_"+libraryVersion)
-	if apiKey != nil {
-		key := *apiKey
-		if key == "" {
-			err := &Error{
-				Message: "The API Key (ServerKey/IrisApiKey) is invalid, as it is an empty string. Please double-check your API key. " +
-					"You can check from the Midtrans Dashboard. " +
-					"See https://docs.midtrans.com/en/midtrans-account/overview?id=retrieving-api-access-keys " +
-					"for the details or please contact us via https://midtrans.com/contact-us. ",
-			}
-			c.Logger.Error("Authentication: ", err.GetMessage())
-			return err
-		} else if strings.Contains(key, " ") {
-			err := &Error{
-				Message: "The API Key (ServerKey/IrisApiKey) contains white-space. Please double-check your API key. " +
-					"You can check the ServerKey from the Midtrans Dashboard. " +
-					"See https://docs.midtrans.com/en/midtrans-account/overview?id=retrieving-api-access-keys " +
-					"for the details or please contact us via https://midtrans.com/contact-us. ",
-			}
-			c.Logger.Error("Authentication: ", err.GetMessage())
-			return err
-		} else {
-			req.SetBasicAuth(key, "")
-		}
+	req.Header.Add("User-Agent", "Onebrick-Go_"+libraryVersion)
+
+	if publicAaccessToken != "" {
+		req.Header.Add("Authorization", "Bearer "+publicAaccessToken)
 	}
 
 	c.Logger.Info("================ Request ================")
@@ -104,7 +83,7 @@ func (c *HttpClientImplementation) DoRequest(req *http.Request, result interface
 		c.Logger.Info("================== END ==================")
 		c.Logger.Info("Request completed in %v ", time.Since(start))
 
-		resBody, err := ioutil.ReadAll(res.Body)
+		resBody, err := io.ReadAll(res.Body)
 		if err != nil {
 			c.Logger.Error("Request failed: %v", err)
 			return &Error{
@@ -123,7 +102,7 @@ func (c *HttpClientImplementation) DoRequest(req *http.Request, result interface
 		if result != nil {
 			if err = json.Unmarshal(resBody, &result); err != nil {
 				return &Error{
-					Message:        fmt.Sprintf("Invalid body response, parse error during API request to Midtrans with message: %s", err.Error()),
+					Message:        fmt.Sprintf("Invalid body response, parse error during API request to Onebrick with message: %s", err.Error()),
 					StatusCode:     res.StatusCode,
 					RawError:       err,
 					RawApiResponse: rawResponse,
@@ -131,11 +110,11 @@ func (c *HttpClientImplementation) DoRequest(req *http.Request, result interface
 			}
 		}
 
-		// Check status_code from Midtrans response body
+		// Check status_code from Onebrick response body
 		if found, data := HasOwnProperty("status_code", resBody); found {
 			statusCode, _ := strconv.Atoi(data["status_code"].(string))
 			if statusCode >= 401 && statusCode != 407 {
-				errMessage := fmt.Sprintf("Midtrans API is returning API error. HTTP status code: %s API response: %s", strconv.Itoa(statusCode), string(resBody))
+				errMessage := fmt.Sprintf("Onebrick API is returning API error. HTTP status code: %s API response: %s", strconv.Itoa(statusCode), string(resBody))
 				return &Error{
 					Message:        errMessage,
 					StatusCode:     statusCode,
@@ -145,9 +124,9 @@ func (c *HttpClientImplementation) DoRequest(req *http.Request, result interface
 			}
 		}
 
-		// Check StatusCode from Midtrans HTTP response api StatusCode
+		// Check StatusCode from Onebrick HTTP response api StatusCode
 		if res.StatusCode >= 400 {
-			errMessage := fmt.Sprintf("Midtrans API is returning API error. HTTP status code: %s  API response: %s", strconv.Itoa(res.StatusCode), string(resBody))
+			errMessage := fmt.Sprintf("Onebrick API is returning API error. HTTP status code: %s  API response: %s", strconv.Itoa(res.StatusCode), string(resBody))
 			return &Error{
 				Message:        errMessage,
 				StatusCode:     res.StatusCode,
@@ -159,7 +138,7 @@ func (c *HttpClientImplementation) DoRequest(req *http.Request, result interface
 	return nil
 }
 
-// ApiResponse : is a structs that may come from Midtrans API endpoints
+// ApiResponse : is a structs that may come from Onebrick API endpoints
 type ApiResponse struct {
 	Status     string // e.g. "200 OK"
 	StatusCode int    // e.g. 200
