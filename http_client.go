@@ -1,6 +1,7 @@
 package onebrick
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -58,6 +59,12 @@ func (c *HttpClientImplementation) Call(method string, url string, publicAaccess
 
 	c.Logger.Info("================ Request ================")
 	c.Logger.Info("%v Request %v %v", req.Method, req.URL, req.Proto)
+	if body != nil {
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(body)
+		c.Logger.Info("Body: %v", buf.String())
+	}
+
 	logHttpHeaders(c.Logger, req.Header, true)
 	return c.DoRequest(req, result)
 }
