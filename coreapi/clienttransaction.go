@@ -16,14 +16,18 @@ func (c *Client) GetPublicAccessToken() (*Response[TokenResponseData], *onebrick
 		ClientID:     c.ClientID,
 		ClientSecret: c.ClientSecret,
 	}
-	tokenRequestJSON, _ := json.Marshal(tokenRequest)
+	headers := make([]map[string]string, 0)
+	headers = append(headers, map[string]string{"username": tokenRequest.ClientID})
+	headers = append(headers, map[string]string{"password": tokenRequest.ClientSecret})
+
 	err := c.HttpClient.Call(
 		http.MethodGet,
 		fmt.Sprintf("%s/payments/auth/token", c.Env.BaseUrl()),
 		"",
 		c.Options,
-		bytes.NewBuffer(tokenRequestJSON),
+		nil,
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -40,6 +44,7 @@ func GetPublicAccessToken() (*Response[TokenResponseData], *onebrick.Error) {
 func (c *Client) CreateClosedVA(data CloseVARequest) (*Response[CloseVAResponseData], *onebrick.Error) {
 	resp := &Response[CloseVAResponseData]{}
 	jsonData, _ := json.Marshal(data)
+	headers := make([]map[string]string, 0)
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/va/close", c.Env.BaseUrl()),
@@ -47,6 +52,7 @@ func (c *Client) CreateClosedVA(data CloseVARequest) (*Response[CloseVAResponseD
 		c.Options,
 		bytes.NewBuffer(jsonData),
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -62,6 +68,7 @@ func CreateClosedVA(data CloseVARequest) (*Response[CloseVAResponseData], *onebr
 // Do GET /payments/gs/va/close?vaId=vaId API
 func (c *Client) CreateClosedVAStatus(data VAStatusRequest) (*Response[CloseVAStatusResponseData], *onebrick.Error) {
 	resp := &Response[CloseVAStatusResponseData]{}
+	headers := make([]map[string]string, 0)
 	err := c.HttpClient.Call(
 		http.MethodGet,
 		fmt.Sprintf("%s/payments/gs/va/close?vaId=%s", c.Env.BaseUrl(), data.VaId),
@@ -69,6 +76,7 @@ func (c *Client) CreateClosedVAStatus(data VAStatusRequest) (*Response[CloseVASt
 		c.Options,
 		nil,
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -85,6 +93,7 @@ func CreateClosedVAStatus(data VAStatusRequest) (*Response[CloseVAStatusResponse
 func (c *Client) CreateOpenVA(data OpenVARequest) (*Response[OpenVAResponseData], *onebrick.Error) {
 	resp := &Response[OpenVAResponseData]{}
 	jsonData, _ := json.Marshal(data)
+	headers := make([]map[string]string, 0)
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/va/open", c.Env.BaseUrl()),
@@ -92,6 +101,7 @@ func (c *Client) CreateOpenVA(data OpenVARequest) (*Response[OpenVAResponseData]
 		c.Options,
 		bytes.NewBuffer(jsonData),
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -107,6 +117,7 @@ func CreateOpenVA(data OpenVARequest) (*Response[OpenVAResponseData], *onebrick.
 // Do GET /payments/gs/va/open?vaId=vaId API
 func (c *Client) CreateOpenVAStatus(data VAStatusRequest) (*Response[OpenVAStatusResponseData], *onebrick.Error) {
 	resp := &Response[OpenVAStatusResponseData]{}
+	headers := make([]map[string]string, 0)
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/va/open?vaId=%s", c.Env.BaseUrl(), data.VaId),
@@ -114,6 +125,7 @@ func (c *Client) CreateOpenVAStatus(data VAStatusRequest) (*Response[OpenVAStatu
 		c.Options,
 		nil,
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -129,6 +141,7 @@ func CreateOpenVAStatus(data VAStatusRequest) (*Response[OpenVAStatusResponseDat
 // Do /payments/gs/qris/dynamic API
 func (c *Client) CreateQRIS(data QRISRequest) (*Response[DynamicQRISResponseData], *onebrick.Error) {
 	resp := &Response[DynamicQRISResponseData]{}
+	headers := make([]map[string]string, 0)
 	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
@@ -137,6 +150,7 @@ func (c *Client) CreateQRIS(data QRISRequest) (*Response[DynamicQRISResponseData
 		c.Options,
 		bytes.NewBuffer(jsonData),
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -152,6 +166,7 @@ func CreateQRIS(data QRISRequest) (*Response[DynamicQRISResponseData], *onebrick
 // Do /payments/gs/qris/dynamic/referenceId API
 func (c *Client) CreateQRISStatus(data StatusQRISRequest) (*Response[DynamicQRISStatusResponseData], *onebrick.Error) {
 	resp := &Response[DynamicQRISStatusResponseData]{}
+	headers := make([]map[string]string, 0)
 	err := c.HttpClient.Call(
 		http.MethodGet,
 		fmt.Sprintf("%s/payments/gs/qris/dynamic/%s", c.Env.BaseUrl(), data.ReferenceId),
@@ -159,6 +174,7 @@ func (c *Client) CreateQRISStatus(data StatusQRISRequest) (*Response[DynamicQRIS
 		c.Options,
 		nil,
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -174,6 +190,7 @@ func CreateQRISStatus(data StatusQRISRequest) (*Response[DynamicQRISStatusRespon
 // Do /payments/gs/qris/dynamic/referenceId/cancel API
 func (c *Client) CreateCancelQRIS(data CancelQRISRequest) (*Response[DynamicQRISCancelResponseData], *onebrick.Error) {
 	resp := &Response[DynamicQRISCancelResponseData]{}
+	headers := make([]map[string]string, 0)
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/qris/dynamic/%s/cancel", c.Env.BaseUrl(), data.ReferenceId),
@@ -181,6 +198,7 @@ func (c *Client) CreateCancelQRIS(data CancelQRISRequest) (*Response[DynamicQRIS
 		c.Options,
 		nil,
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -196,6 +214,7 @@ func CreateCancelQRIS(data CancelQRISRequest) (*Response[DynamicQRISCancelRespon
 // Do /payments/gs/payment-link API
 func (c *Client) CreatePaymentLink(data PaymentLinkRequest) (*Response[PaymentLinkResponseData], *onebrick.Error) {
 	resp := &Response[PaymentLinkResponseData]{}
+	headers := make([]map[string]string, 0)
 	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
@@ -204,6 +223,7 @@ func (c *Client) CreatePaymentLink(data PaymentLinkRequest) (*Response[PaymentLi
 		c.Options,
 		bytes.NewBuffer(jsonData),
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -219,6 +239,7 @@ func CreatePaymentLink(data PaymentLinkRequest) (*Response[PaymentLinkResponseDa
 // Do /payments/gs/acceptance/ewallet API
 func (c *Client) CreateEwallet(data EWalletRequest) (*Response[EwalletResponseData], *onebrick.Error) {
 	resp := &Response[EwalletResponseData]{}
+	headers := make([]map[string]string, 0)
 	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
@@ -227,6 +248,7 @@ func (c *Client) CreateEwallet(data EWalletRequest) (*Response[EwalletResponseDa
 		c.Options,
 		bytes.NewBuffer(jsonData),
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err
@@ -242,6 +264,7 @@ func CreateEwallet(data EWalletRequest) (*Response[EwalletResponseData], *onebri
 // Do /payments/gs/top-up/unique-code API
 func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUqniqueCodeResponseData], *onebrick.Error) {
 	resp := &Response[BcaUqniqueCodeResponseData]{}
+	headers := make([]map[string]string, 0)
 	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
@@ -250,6 +273,7 @@ func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUq
 		c.Options,
 		bytes.NewBuffer(jsonData),
 		resp,
+		headers,
 	)
 	if err != nil {
 		return resp, err

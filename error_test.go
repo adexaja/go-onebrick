@@ -29,9 +29,9 @@ func TestErrorStruct(t *testing.T) {
 func TestErrorResponse(t *testing.T) {
 	c := GetHttpClient(Environment)
 	jsonReq, _ := json.Marshal("{\"amount\": 15000, \"referenceId\": \"brick12345\", \"description\": \"Test Initial VA Close\", \"bankShortCode\": \"MANDIRI\", \"displayName\": \"BRICK\"}")
+	headers := make([]map[string]string, 0)
 
-	err := c.Call(http.MethodPost, "https://sandbox.onebrick.io/v2/payments/gs/va/close", "", nil, bytes.NewBuffer(jsonReq), nil)
-
+	err := c.Call(http.MethodPost, "https://sandbox.onebrick.io/v2/payments/gs/va/close", "", nil, bytes.NewBuffer(jsonReq), nil, headers)
 	var midError *Error
 	assert.True(t, true, errors.Is(err, err))
 	assert.True(t, true, errors.As(err, &midError))

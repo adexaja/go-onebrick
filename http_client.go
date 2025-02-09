@@ -12,7 +12,7 @@ import (
 )
 
 type HttpClient interface {
-	Call(method string, url string, publicAaccessToken string, options *ConfigOptions, body io.Reader, result interface{}) *Error
+	Call(method string, url string, publicAaccessToken string, options *ConfigOptions, body io.Reader, result interface{}, headers []map[string]string) *Error
 }
 
 // HttpClientImplementation : this is for midtrans HttpClient Implementation
@@ -24,7 +24,7 @@ type HttpClientImplementation struct {
 // Call the Onebrick API at specific `path` using the specified HTTP `method`. The result will be
 // given to `result` if there is no error. If any error occurred, the return of this function is the `midtrans.Error`
 // itself, otherwise nil.
-func (c *HttpClientImplementation) Call(method string, url string, publicAaccessToken string, options *ConfigOptions, body io.Reader, result interface{}) *Error {
+func (c *HttpClientImplementation) Call(method string, url string, publicAaccessToken string, options *ConfigOptions, body io.Reader, result interface{}, headers []map[string]string) *Error {
 	// NewRequest is used by Call to generate an http.Request.
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
@@ -46,6 +46,14 @@ func (c *HttpClientImplementation) Call(method string, url string, publicAaccess
 
 	if publicAaccessToken != "" {
 		req.Header.Add("publicAaccessToken", "Bearer "+publicAaccessToken)
+	}
+
+	if len(headers) > 0 {
+		for _, header := range headers {
+			for key, value := range header {
+				req.Header.Add(key, value)
+			}
+		}
 	}
 
 	c.Logger.Info("================ Request ================")
