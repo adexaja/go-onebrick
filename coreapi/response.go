@@ -24,7 +24,7 @@ type Response[T any] struct {
 	Status   int            `json:"status"`
 	Error    *ResponseError `json:"error"`
 	MetaData *MetaData      `json:"metaData"`
-	Data     T              `json:"data"`
+	Data     *T             `json:"data"`
 }
 
 type TokenResponseData struct {

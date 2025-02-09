@@ -19,7 +19,7 @@ const (
 	Production
 
 	// libraryVersion : onebrick go library version
-	libraryVersion = "v.0.0."
+	libraryVersion = "v.0.0.1"
 )
 
 // Client ID
