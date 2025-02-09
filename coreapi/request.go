@@ -60,7 +60,7 @@ type StatusQRISRequest struct {
 	PublicAccessToken string `json:"publicAccessToken"`
 	ReferenceId       string `json:"referenceId"`
 }
-type CancleQRISRequest struct {
+type CancelQRISRequest struct {
 	PublicAccessToken string `json:"publicAccessToken"`
 	ReferenceId       string `json:"referenceId"`
 }

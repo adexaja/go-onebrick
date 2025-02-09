@@ -89,6 +89,20 @@ type DynamicQRISResponseData struct {
 	ExpiredAt   time.Time `json:"expiredAt"`
 	QRData      string    `json:"qrData"`
 }
+type DynamicQRISStatusResponseData struct {
+	ID          string    `json:"id"`
+	ReferenceId string    `json:"referenceId"`
+	Amount      float64   `json:"amount"`
+	Status      string    `json:"status"`
+	QRData      string    `json:"qrData"`
+	PaidAt      time.Time `json:"paidAt"`
+}
+type DynamicQRISCancelResponseData struct {
+	Message     string    `json:"message"`
+	ID          string    `json:"id"`
+	ReferenceId string    `json:"referenceId"`
+	CancelledAt time.Time `json:"cancelledAt"`
+}
 
 type PaymentLinkResponseData struct {
 	PaymentLinkPath string    `json:"paymentLinkPath"`
