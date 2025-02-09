@@ -2,6 +2,7 @@ package onebrick
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -78,6 +79,10 @@ func (e EnvironmentType) BaseUrl() string {
 		}
 	}
 	return "undefined"
+}
+
+func (e EnvironmentType) TokenURL() string {
+	return fmt.Sprintf("%s/payments/auth/token", e.BaseUrl())
 }
 
 type ConfigOptions struct {
