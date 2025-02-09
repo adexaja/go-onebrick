@@ -1,5 +1,10 @@
 package coreapi
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
 type StatusEnum string
 
 var (
@@ -21,10 +26,31 @@ type ResponseError struct {
 }
 
 type Response[T any] struct {
-	Status   int            `json:"status"`
-	Error    *ResponseError `json:"error"`
-	MetaData *MetaData      `json:"metaData"`
-	Data     *T             `json:"data"`
+	Status   int             `json:"status"`
+	Error    json.RawMessage `json:"error"`
+	MetaData *MetaData       `json:"metaData"`
+	Data     *T              `json:"data"`
+}
+
+// GetError returns either string error or ResponseError
+func (r *Response[T]) GetError() (*ResponseError, string, error) {
+	if r.Error == nil {
+		return nil, "", nil
+	}
+
+	// Try to unmarshal as string first
+	var strError string
+	if err := json.Unmarshal(r.Error, &strError); err == nil {
+		return nil, strError, nil
+	}
+
+	// If not string, try to unmarshal as ResponseError
+	var structError ResponseError
+	if err := json.Unmarshal(r.Error, &structError); err != nil {
+		return nil, "", fmt.Errorf("failed to parse error: %w", err)
+	}
+
+	return &structError, "", nil
 }
 
 type TokenResponseData struct {
