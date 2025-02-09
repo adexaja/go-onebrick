@@ -45,7 +45,7 @@ func (c *HttpClientImplementation) Call(method string, url string, publicAaccess
 	req.Header.Add("User-Agent", "Onebrick-Go_"+libraryVersion)
 
 	if publicAaccessToken != "" {
-		req.Header.Add("publicAaccessToken", "Bearer "+publicAaccessToken)
+		req.Header.Add("publicAccessToken", "Bearer "+publicAaccessToken)
 	}
 
 	if len(headers) > 0 {
