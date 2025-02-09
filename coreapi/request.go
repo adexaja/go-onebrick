@@ -1,7 +1,5 @@
 package coreapi
 
-import "time"
-
 type TokenRequest struct {
 	ClientID     string `json:"username"`
 	ClientSecret string `json:"password"`
@@ -18,21 +16,21 @@ type VAStatusRequest struct {
 }
 
 type CloseVARequest struct {
-	PublicAccessToken string    `json:"-"`
-	PaymentMethodType string    `json:"paymentMethodType"`
-	Amount            float64   `json:"amount"`
-	Description       string    `json:"description"`
-	ExpiredAt         time.Time `json:"expiredAt"`
-	BankShortCode     string    `json:"bankShortCode"`
-	ReferenceId       string    `json:"referenceId"`
-	DisplayName       string    `json:"displayName"`
+	PublicAccessToken string        `json:"-"`
+	PaymentMethodType string        `json:"paymentMethodType"`
+	Amount            float64       `json:"amount"`
+	Description       string        `json:"description"`
+	ExpiredAt         BrickDateTime `json:"expiredAt"`
+	BankShortCode     string        `json:"bankShortCode"`
+	ReferenceId       string        `json:"referenceId"`
+	DisplayName       string        `json:"displayName"`
 }
 
 type QRISRequest struct {
-	PublicAccessToken string    `json:"-"`
-	ReferenceId       string    `json:"referenceId"`
-	Amount            float64   `json:"amount"`
-	ExpiredAt         time.Time `json:"expiredAt"`
+	PublicAccessToken string        `json:"-"`
+	ReferenceId       string        `json:"referenceId"`
+	Amount            float64       `json:"amount"`
+	ExpiredAt         BrickDateTime `json:"expiredAt"`
 }
 
 type StatusQRISRequest struct {
@@ -58,12 +56,12 @@ type PaymentLinkRequest struct {
 }
 
 type EWalletRequest struct {
-	PublicAccessToken string    `json:"-"`
-	Amount            float64   `json:"amount"`
-	ReferenceId       string    `json:"referenceId"`
-	EwalletCode       string    `json:"ewalletCode"`
-	ExpiryTime        time.Time `json:"expiryTime"`
-	ReturnUrl         string    `json:"returnUrl"`
+	PublicAccessToken string        `json:"-"`
+	Amount            float64       `json:"amount"`
+	ReferenceId       string        `json:"referenceId"`
+	EwalletCode       string        `json:"ewalletCode"`
+	ExpiryTime        BrickDateTime `json:"expiryTime"`
+	ReturnUrl         string        `json:"returnUrl"`
 }
 
 type BCAUniqueCodeRequest struct {

@@ -12,7 +12,7 @@ func ClosedVaParams(token string) coreapi.CloseVARequest {
 		PaymentMethodType: "BCA",
 		Amount:            15000,
 		Description:       "Test Initial VA Close",
-		ExpiredAt:         time.Now().Add(time.Hour * 24 * 7),
+		ExpiredAt:         coreapi.NewBrickDateTime(time.Now().Add(time.Hour * 24 * 7)),
 		BankShortCode:     "BCA",
 		ReferenceId:       "brick12345",
 		DisplayName:       "BRICK",
@@ -33,7 +33,7 @@ func QRISParams(token string) coreapi.QRISRequest {
 		PublicAccessToken: token,
 		ReferenceId:       "brick12345",
 		Amount:            15000,
-		ExpiredAt:         time.Now().Add(time.Hour * 24 * 7),
+		ExpiredAt:         coreapi.NewBrickDateTime(time.Now().Add(time.Hour * 24 * 7)),
 	}
 }
 
@@ -58,7 +58,7 @@ func EwalletParams(token string) coreapi.EWalletRequest {
 		Amount:            15000,
 		ReferenceId:       "brick12345",
 		EwalletCode:       "123456",
-		ExpiryTime:        time.Now().Add(time.Hour * 24 * 7),
+		ExpiryTime:        coreapi.NewBrickDateTime(time.Now().Add(time.Hour * 24 * 7)),
 		ReturnUrl:         "https://www.brick.com",
 	}
 }
