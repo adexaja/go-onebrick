@@ -59,16 +59,15 @@ func CreateClosedVA(data CloseVARequest) (*Response[CloseVAResponseData], *onebr
 	return getDefaultClient().CreateClosedVA(data)
 }
 
-// Do /payments/gs/va/status API
+// Do GET /payments/gs/va/close?vaId=vaId API
 func (c *Client) CreateClosedVAStatus(data VAStatusRequest) (*Response[CloseVAStatusResponseData], *onebrick.Error) {
 	resp := &Response[CloseVAStatusResponseData]{}
-	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
-		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/va/status", c.Env.BaseUrl()),
+		http.MethodGet,
+		fmt.Sprintf("%s/payments/gs/va/close?vaId=%s", c.Env.BaseUrl(), data.VaId),
 		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		nil,
 		resp,
 	)
 	if err != nil {
@@ -77,7 +76,7 @@ func (c *Client) CreateClosedVAStatus(data VAStatusRequest) (*Response[CloseVASt
 	return resp, nil
 }
 
-// Do /payments/gs/va/status API
+// Do GET /payments/gs/va/close?vaId=vaId API
 func CreateClosedVAStatus(data VAStatusRequest) (*Response[CloseVAStatusResponseData], *onebrick.Error) {
 	return getDefaultClient().CreateClosedVAStatus(data)
 }
@@ -105,16 +104,15 @@ func CreateOpenVA(data OpenVARequest) (*Response[OpenVAResponseData], *onebrick.
 	return getDefaultClient().CreateOpenVA(data)
 }
 
-// Do /payments/gs/va/status API
+// Do GET /payments/gs/va/open?vaId=vaId API
 func (c *Client) CreateOpenVAStatus(data VAStatusRequest) (*Response[OpenVAStatusResponseData], *onebrick.Error) {
 	resp := &Response[OpenVAStatusResponseData]{}
-	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/va/status", c.Env.BaseUrl()),
+		fmt.Sprintf("%s/payments/gs/va/open?vaId=%s", c.Env.BaseUrl(), data.VaId),
 		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		nil,
 		resp,
 	)
 	if err != nil {
@@ -123,18 +121,18 @@ func (c *Client) CreateOpenVAStatus(data VAStatusRequest) (*Response[OpenVAStatu
 	return resp, nil
 }
 
-// Do /payments/gs/va/status API
+// Do GET /payments/gs/va/open?vaId=vaId API
 func CreateOpenVAStatus(data VAStatusRequest) (*Response[OpenVAStatusResponseData], *onebrick.Error) {
 	return getDefaultClient().CreateOpenVAStatus(data)
 }
 
-// Do /payments/gs/qris API
+// Do /payments/gs/qris/dynamic API
 func (c *Client) CreateQRIS(data QRISRequest) (*Response[DynamicQRISResponseData], *onebrick.Error) {
 	resp := &Response[DynamicQRISResponseData]{}
 	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/qris", c.Env.BaseUrl()),
+		fmt.Sprintf("%s/payments/gs/qris/dynamic", c.Env.BaseUrl()),
 		data.PublicAccessToken,
 		c.Options,
 		bytes.NewBuffer(jsonData),
@@ -146,21 +144,20 @@ func (c *Client) CreateQRIS(data QRISRequest) (*Response[DynamicQRISResponseData
 	return resp, nil
 }
 
-// Do /payments/gs/qris API
+// Do /payments/gs/qris/dynamic API
 func CreateQRIS(data QRISRequest) (*Response[DynamicQRISResponseData], *onebrick.Error) {
 	return getDefaultClient().CreateQRIS(data)
 }
 
-// Do /payments/gs/qris/status API
-func (c *Client) CreateQRISStatus(data QRISCallbackRequest, publicAccessToken string) (*Response[DynamicQRISStatusResponseData], *onebrick.Error) {
+// Do /payments/gs/qris/dynamic/referenceId API
+func (c *Client) CreateQRISStatus(data StatusQRISRequest) (*Response[DynamicQRISStatusResponseData], *onebrick.Error) {
 	resp := &Response[DynamicQRISStatusResponseData]{}
-	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
-		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/qris/status", c.Env.BaseUrl()),
-		publicAccessToken,
+		http.MethodGet,
+		fmt.Sprintf("%s/payments/gs/qris/dynamic/%s", c.Env.BaseUrl(), data.ReferenceId),
+		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		nil,
 		resp,
 	)
 	if err != nil {
@@ -169,18 +166,40 @@ func (c *Client) CreateQRISStatus(data QRISCallbackRequest, publicAccessToken st
 	return resp, nil
 }
 
-// Do /payments/gs/qris/status API
-func CreateQRISStatus(data QRISCallbackRequest, publicAccessToken string) (*Response[DynamicQRISStatusResponseData], *onebrick.Error) {
-	return getDefaultClient().CreateQRISStatus(data, publicAccessToken)
+// Do /payments/gs/qris/dynamic/referenceId API
+func CreateQRISStatus(data StatusQRISRequest) (*Response[DynamicQRISStatusResponseData], *onebrick.Error) {
+	return getDefaultClient().CreateQRISStatus(data)
 }
 
-// Do /payments/gs/qris/cancel API
+// Do /payments/gs/qris/dynamic/referenceId/cancel API
 func (c *Client) CreateCancelQRIS(data CancelQRISRequest) (*Response[DynamicQRISCancelResponseData], *onebrick.Error) {
 	resp := &Response[DynamicQRISCancelResponseData]{}
+	err := c.HttpClient.Call(
+		http.MethodPost,
+		fmt.Sprintf("%s/payments/gs/qris/dynamic/%s/cancel", c.Env.BaseUrl(), data.ReferenceId),
+		data.PublicAccessToken,
+		c.Options,
+		nil,
+		resp,
+	)
+	if err != nil {
+		return resp, err
+	}
+	return resp, nil
+}
+
+// Do /payments/gs/qris/dynamic/referenceId/cancel API
+func CreateCancelQRIS(data CancelQRISRequest) (*Response[DynamicQRISCancelResponseData], *onebrick.Error) {
+	return getDefaultClient().CreateCancelQRIS(data)
+}
+
+// Do /payments/gs/payment-link API
+func (c *Client) CreatePaymentLink(data PaymentLinkRequest) (*Response[PaymentLinkResponseData], *onebrick.Error) {
+	resp := &Response[PaymentLinkResponseData]{}
 	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/qris/cancel", c.Env.BaseUrl()),
+		fmt.Sprintf("%s/payments/gs/payment-link", c.Env.BaseUrl()),
 		data.PublicAccessToken,
 		c.Options,
 		bytes.NewBuffer(jsonData),
@@ -192,42 +211,19 @@ func (c *Client) CreateCancelQRIS(data CancelQRISRequest) (*Response[DynamicQRIS
 	return resp, nil
 }
 
-// Do /payments/gs/qris/cancel API
-func CreateCancelQRIS(data CancelQRISRequest) (*Response[DynamicQRISCancelResponseData], *onebrick.Error) {
-	return getDefaultClient().CreateCancelQRIS(data)
+// Do /payments/gs/payment-link API
+func CreatePaymentLink(data PaymentLinkRequest) (*Response[PaymentLinkResponseData], *onebrick.Error) {
+	return getDefaultClient().CreatePaymentLink(data)
 }
 
-// Do /payments/gs/link API
-func (c *Client) CreatePaymentLink(data PaymentLinkRequest, publicAccessToken string) (*Response[PaymentLinkResponseData], *onebrick.Error) {
-	resp := &Response[PaymentLinkResponseData]{}
-	jsonData, _ := json.Marshal(data)
-	err := c.HttpClient.Call(
-		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/link", c.Env.BaseUrl()),
-		publicAccessToken,
-		c.Options,
-		bytes.NewBuffer(jsonData),
-		resp,
-	)
-	if err != nil {
-		return resp, err
-	}
-	return resp, nil
-}
-
-// Do /payments/gs/link API
-func CreatePaymentLink(data PaymentLinkRequest, publicAccessToken string) (*Response[PaymentLinkResponseData], *onebrick.Error) {
-	return getDefaultClient().CreatePaymentLink(data, publicAccessToken)
-}
-
-// Do /payments/gs/ewallet API
-func (c *Client) CreateEwallet(data EWalletRequest, publicAccessToken string) (*Response[EwalletResponseData], *onebrick.Error) {
+// Do /payments/gs/acceptance/ewallet API
+func (c *Client) CreateEwallet(data EWalletRequest) (*Response[EwalletResponseData], *onebrick.Error) {
 	resp := &Response[EwalletResponseData]{}
 	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/ewallet", c.Env.BaseUrl()),
-		publicAccessToken,
+		fmt.Sprintf("%s/payments/gs/acceptance/ewallet", c.Env.BaseUrl()),
+		data.PublicAccessToken,
 		c.Options,
 		bytes.NewBuffer(jsonData),
 		resp,
@@ -238,19 +234,19 @@ func (c *Client) CreateEwallet(data EWalletRequest, publicAccessToken string) (*
 	return resp, nil
 }
 
-// Do /payments/gs/ewallet API
-func CreateEwallet(data EWalletRequest, publicAccessToken string) (*Response[EwalletResponseData], *onebrick.Error) {
-	return getDefaultClient().CreateEwallet(data, publicAccessToken)
+// Do /payments/gs/acceptance/ewallet API
+func CreateEwallet(data EWalletRequest) (*Response[EwalletResponseData], *onebrick.Error) {
+	return getDefaultClient().CreateEwallet(data)
 }
 
-// Do /payments/gs/bca/unique-code API
-func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest, publicAccessToken string) (*Response[BcaUqniqueCodeResponseData], *onebrick.Error) {
+// Do /payments/gs/top-up/unique-code API
+func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUqniqueCodeResponseData], *onebrick.Error) {
 	resp := &Response[BcaUqniqueCodeResponseData]{}
 	jsonData, _ := json.Marshal(data)
 	err := c.HttpClient.Call(
 		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/bca/unique-code", c.Env.BaseUrl()),
-		publicAccessToken,
+		fmt.Sprintf("%s/payments/gs/top-up/unique-code", c.Env.BaseUrl()),
+		data.PublicAccessToken,
 		c.Options,
 		bytes.NewBuffer(jsonData),
 		resp,
@@ -261,7 +257,7 @@ func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest, publicAccessToke
 	return resp, nil
 }
 
-// Do /payments/gs/bca/unique-code API
-func CreateBCAUniqueCode(data BCAUniqueCodeRequest, publicAccessToken string) (*Response[BcaUqniqueCodeResponseData], *onebrick.Error) {
-	return getDefaultClient().CreateBCAUniqueCode(data, publicAccessToken)
+// Do /payments/gs/top-up/unique-code API
+func CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUqniqueCodeResponseData], *onebrick.Error) {
+	return getDefaultClient().CreateBCAUniqueCode(data)
 }
