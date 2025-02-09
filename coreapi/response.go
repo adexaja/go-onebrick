@@ -1,6 +1,17 @@
 package coreapi
 
-import "time"
+import (
+	"time"
+)
+
+type StatusEnum string
+
+var (
+	StatusPending   StatusEnum = "Pending"
+	StatusPaid      StatusEnum = "Paid"
+	StatusCompleted StatusEnum = "Completed"
+	StatusExpired   StatusEnum = "Expired"
+)
 
 type MetaData struct {
 	Source string `json:"source"`
@@ -27,10 +38,49 @@ type TokenResponseData struct {
 	ExpiresAt   time.Time `json:"expiresAt"`
 }
 
-type (
-	OpenVAResponseData  struct{}
-	CloseVAResponseData struct{}
-)
+type OpenVAResponseData struct {
+	ID            string `json:"id"`
+	BankShortCode string `json:"bankShortCode"`
+	ReferenceId   string `json:"referenceId"`
+	DisplayName   string `json:"displayName"`
+	AccountNo     string `json:"accountNo"`
+}
+
+type OpenVAStatusResponseData struct {
+	ID            string `json:"id"`
+	Type          string `json:"type"`
+	BankShortCode string `json:"bankShortCode"`
+	ReferenceId   string `json:"referenceId"`
+	DisplayName   string `json:"displayName"`
+	AccountNo     string `json:"accountNo"`
+}
+
+type CloseVAResponseData struct {
+	ID            string  `json:"id"`
+	Type          string  `json:"type"`
+	Amount        float64 `json:"amount"`
+	Description   string  `json:"description"`
+	CreatedAt     int     `json:"createdAt"`
+	ExpiredAt     int     `json:"expiredAt"`
+	Status        string  `json:"status"`
+	BankShortCode string  `json:"bankShortCode"`
+	ReferenceId   string  `json:"referenceId"`
+	DisplayName   string  `json:"displayName"`
+	AccountNo     string  `json:"accountNo"`
+}
+type CloseVAStatusResponseData struct {
+	ID            string     `json:"id"`
+	Type          string     `json:"type"`
+	Amount        float64    `json:"amount"`
+	Description   string     `json:"description"`
+	CreatedAt     int        `json:"createdAt"`
+	ExpiredAt     int        `json:"expiredAt"`
+	BankShortCode string     `json:"bankShortCode"`
+	ReferenceId   string     `json:"referenceId"`
+	DisplayName   string     `json:"displayName"`
+	AccountNo     string     `json:"accountNo"`
+	Status        StatusEnum `json:"status"`
+}
 
 type (
 	DynamicQRISResponseData struct{}
