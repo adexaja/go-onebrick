@@ -7,6 +7,8 @@ import (
 
 type BrickDateTime time.Time
 
+const timeFormat = "2006-01-02T15:04:05.999999"
+
 // Convert time.Time to CustomTime
 func NewBrickDateTime(t time.Time) BrickDateTime {
 	return BrickDateTime(t)
@@ -23,7 +25,7 @@ func (ct *BrickDateTime) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	t, err := time.Parse("2006-01-02T15:04:05.999999", timeStr)
+	t, err := time.Parse(timeFormat, timeStr)
 	if err != nil {
 		return err
 	}
@@ -35,10 +37,10 @@ func (ct *BrickDateTime) UnmarshalJSON(b []byte) error {
 // MarshalJSON implements json.Marshaler
 func (ct *BrickDateTime) MarshalJSON() ([]byte, error) {
 	t := time.Time(*ct)
-	return json.Marshal(t.Format("2006-01-02T15:04:05.999999"))
+	return json.Marshal(t.Format(timeFormat))
 }
 
 // String implements Stringer interface
 func (ct *BrickDateTime) String() string {
-	return time.Time(*ct).Format("2006-01-02T15:04:05.999999")
+	return time.Time(*ct).Format(timeFormat)
 }
