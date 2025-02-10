@@ -13,7 +13,7 @@ import (
 )
 
 type HttpClient interface {
-	Call(method string, url string, publicAaccessToken string, options *ConfigOptions, body io.Reader, result interface{}, headers []map[string]string) *Error
+	Call(method string, url string, publicAaccessToken string, options *ConfigOptions, data interface{}, result interface{}, headers []map[string]string) *Error
 }
 
 // HttpClientImplementation : this is for midtrans HttpClient Implementation
@@ -25,9 +25,27 @@ type HttpClientImplementation struct {
 // Call the Onebrick API at specific `path` using the specified HTTP `method`. The result will be
 // given to `result` if there is no error. If any error occurred, the return of this function is the `midtrans.Error`
 // itself, otherwise nil.
-func (c *HttpClientImplementation) Call(method string, url string, publicAaccessToken string, options *ConfigOptions, body io.Reader, result interface{}, headers []map[string]string) *Error {
+func (c *HttpClientImplementation) Call(method string, url string, publicAaccessToken string, options *ConfigOptions, data interface{}, result interface{}, headers []map[string]string) *Error {
 	// NewRequest is used by Call to generate an http.Request.
-	req, err := http.NewRequest(method, url, body)
+	var bodyReader io.Reader // Declare bodyReader
+
+	if data != nil { // Check if data is provided
+		jsonData, err := json.Marshal(data) // Marshal the struct
+		if err != nil {
+			c.Logger.Error("Error marshaling JSON: %v", err)
+			return &Error{
+				Message:  fmt.Sprintf("Error marshaling JSON: %v", err),
+				RawError: err,
+			}
+		}
+
+		c.Logger.Info("JSON payload: %s", string(jsonData)) // Log the JSON
+
+		bodyReader = bytes.NewReader(jsonData) // Create reader from JSON bytes
+	} else {
+		c.Logger.Info("Request body is empty")
+	}
+	req, err := http.NewRequest(method, url, bodyReader)
 	if err != nil {
 		c.Logger.Error("Cannot create Onebrick request: %v", err)
 		return &Error{
@@ -59,11 +77,6 @@ func (c *HttpClientImplementation) Call(method string, url string, publicAaccess
 
 	c.Logger.Info("================ Request ================")
 	c.Logger.Info("%v Request %v %v", req.Method, req.URL, req.Proto)
-	if body != nil {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(body)
-		c.Logger.Info("Body: %v", buf.String())
-	}
 
 	logHttpHeaders(c.Logger, req.Header, true)
 	return c.DoRequest(req, result)

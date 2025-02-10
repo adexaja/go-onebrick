@@ -1,9 +1,7 @@
 package coreapi
 
 import (
-	"bytes"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -48,14 +46,14 @@ func GetPublicAccessToken() (*Response[TokenResponseData], *onebrick.Error) {
 // DO /payments/gs/va/close API
 func (c *Client) CreateClosedVA(data CloseVARequest) (*Response[CloseVAResponseData], *onebrick.Error) {
 	resp := &Response[CloseVAResponseData]{}
-	jsonData, _ := json.Marshal(data)
+
 	headers := make([]map[string]string, 0)
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/va/close", c.Env.BaseUrl()),
 		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		data,
 		resp,
 		headers,
 	)
@@ -97,14 +95,14 @@ func CreateClosedVAStatus(data VAStatusRequest) (*Response[CloseVAStatusResponse
 // DO /payments/gs/va/open API
 func (c *Client) CreateOpenVA(data OpenVARequest) (*Response[OpenVAResponseData], *onebrick.Error) {
 	resp := &Response[OpenVAResponseData]{}
-	jsonData, _ := json.Marshal(data)
+
 	headers := make([]map[string]string, 0)
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/va/open", c.Env.BaseUrl()),
 		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		data,
 		resp,
 		headers,
 	)
@@ -147,13 +145,13 @@ func CreateOpenVAStatus(data VAStatusRequest) (*Response[OpenVAStatusResponseDat
 func (c *Client) CreateQRIS(data QRISRequest) (*Response[DynamicQRISResponseData], *onebrick.Error) {
 	resp := &Response[DynamicQRISResponseData]{}
 	headers := make([]map[string]string, 0)
-	jsonData, _ := json.Marshal(data)
+
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/qris/dynamic", c.Env.BaseUrl()),
 		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		data,
 		resp,
 		headers,
 	)
@@ -220,13 +218,13 @@ func CreateCancelQRIS(data CancelQRISRequest) (*Response[DynamicQRISCancelRespon
 func (c *Client) CreatePaymentLink(data PaymentLinkRequest) (*Response[PaymentLinkResponseData], *onebrick.Error) {
 	resp := &Response[PaymentLinkResponseData]{}
 	headers := make([]map[string]string, 0)
-	jsonData, _ := json.Marshal(data)
+
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/payment-link", c.Env.BaseUrl()),
 		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		data,
 		resp,
 		headers,
 	)
@@ -245,13 +243,13 @@ func CreatePaymentLink(data PaymentLinkRequest) (*Response[PaymentLinkResponseDa
 func (c *Client) CreateEwallet(data EWalletRequest) (*Response[EwalletResponseData], *onebrick.Error) {
 	resp := &Response[EwalletResponseData]{}
 	headers := make([]map[string]string, 0)
-	jsonData, _ := json.Marshal(data)
+
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/acceptance/ewallet", c.Env.BaseUrl()),
 		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		data,
 		resp,
 		headers,
 	)
@@ -270,13 +268,13 @@ func CreateEwallet(data EWalletRequest) (*Response[EwalletResponseData], *onebri
 func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUqniqueCodeResponseData], *onebrick.Error) {
 	resp := &Response[BcaUqniqueCodeResponseData]{}
 	headers := make([]map[string]string, 0)
-	jsonData, _ := json.Marshal(data)
+
 	err := c.HttpClient.Call(
 		http.MethodPost,
 		fmt.Sprintf("%s/payments/gs/top-up/unique-code", c.Env.BaseUrl()),
 		data.PublicAccessToken,
 		c.Options,
-		bytes.NewBuffer(jsonData),
+		data,
 		resp,
 		headers,
 	)
