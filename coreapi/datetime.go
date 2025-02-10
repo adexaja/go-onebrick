@@ -35,12 +35,12 @@ func (ct *BrickDateTime) UnmarshalJSON(b []byte) error {
 }
 
 // MarshalJSON implements json.Marshaler
-func (ct *BrickDateTime) MarshalJSON() ([]byte, error) {
-	t := time.Time(*ct)
+func (ct BrickDateTime) MarshalJSON() ([]byte, error) {
+	t := time.Time(ct)
 	return json.Marshal(t.Format(timeFormat))
 }
 
 // String implements Stringer interface
-func (ct *BrickDateTime) String() string {
-	return time.Time(*ct).Format(timeFormat)
+func (ct BrickDateTime) String() string {
+	return time.Time(ct).Format(timeFormat)
 }
