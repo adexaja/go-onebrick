@@ -15,84 +15,84 @@ var (
 	Token        string = "token"
 )
 
-func initToken() {
+func initToken() string {
 	resp, err := c.GetPublicAccessToken()
 	if err != nil {
 		fmt.Println(err)
-		return
+		return ""
 	}
 
-	Token = resp.Data.AccessToken
+	return resp.Data.AccessToken
 }
 
-func CreateClosedVA() {
+func CreateClosedVA(Token string) {
 	params := example.ClosedVaParams(Token)
 	resp, err := c.CreateClosedVA(params)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Data)
 }
 
-func CreateOpenVA() {
+func CreateOpenVA(Token string) {
 	params := example.OpenVaParams(Token)
 	resp, err := c.CreateOpenVA(params)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Data)
 }
 
-func CreateQRIS() {
+func CreateQRIS(Token string) {
 	params := example.QRISParams(Token)
 	resp, err := c.CreateQRIS(params)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Data)
 }
 
-func CreatePaymentLink() {
+func CreatePaymentLink(Token string) {
 	params := example.PaymentLinkParams(Token)
 	resp, err := c.CreatePaymentLink(params)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Data)
 }
 
-func CreateEwallet() {
+func CreateEwallet(Token string) {
 	params := example.EwalletParams(Token)
 	resp, err := c.CreateEwallet(params)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Data)
 }
 
-func CreateBCAUniqueCode() {
+func CreateBCAUniqueCode(Token string) {
 	params := example.BCAUniqueCodeParams(Token)
 	resp, err := c.CreateBCAUniqueCode(params)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Data)
 }
 
 func main() {
 	c.New(ClientID, ClientSecret, onebrick.Sandbox)
-	initToken()
+	token := initToken()
 
-	// CreateClosedVA()
-	// CreateOpenVA()
-	// CreateQRIS()
-	// CreatePaymentLink()
-	// CreateEwallet()
-	// CreateBCAUniqueCode()
+	// CreateClosedVA(token)
+	// CreateOpenVA(token)
+	// CreateQRIS(token)
+	// CreatePaymentLink(token)
+	// CreateEwallet(token)
+	CreateBCAUniqueCode(token)
 }
