@@ -56,12 +56,12 @@ type PaymentLinkRequest struct {
 }
 
 type EWalletRequest struct {
-	PublicAccessToken string        `json:"-"`
-	Amount            float64       `json:"amount"`
-	ReferenceId       string        `json:"referenceId"`
-	EwalletCode       string        `json:"ewalletCode"`
-	ExpiryTime        BrickDateTime `json:"expiryTime"`
-	ReturnUrl         string        `json:"returnUrl"`
+	PublicAccessToken string  `json:"-"`
+	Amount            float64 `json:"amount"`
+	ReferenceId       string  `json:"referenceId"`
+	EwalletCode       string  `json:"ewalletCode"`
+	ExpiryTime        int     `json:"expiryTime"`
+	ReturnUrl         string  `json:"returnUrl"`
 }
 
 type BCAUniqueCodeRequest struct {

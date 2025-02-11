@@ -3,6 +3,7 @@ package coreapi
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 type StatusEnum string
@@ -133,7 +134,7 @@ type PaymentLinkResponseData struct {
 	ReferenceId     string        `json:"referenceId"`
 	Status          string        `json:"status"`
 }
-type BcaUqniqueCodeResponseData struct {
+type BcaUniqueCodeResponseData struct {
 	Message       string  `json:"message"`
 	TransactionId string  `json:"transactionId"`
 	BankShortCode string  `json:"bankShortCode"`
@@ -144,12 +145,13 @@ type BcaUqniqueCodeResponseData struct {
 	AmountUnique  float64 `json:"amountUnique"`
 }
 type EwalletResponseData struct {
-	Message     string        `json:"message"`
-	ID          string        `json:"id"`
-	ReferenceId string        `json:"referenceId"`
-	Amount      float64       `json:"amount"`
-	Status      string        `json:"status"`
-	EwalletCode string        `json:"ewalletCode"`
-	RedirectURL string        `json:"redirectUrl"`
-	ExpiredAt   BrickDateTime `json:"expiredAt"`
+	Message     string    `json:"message"`
+	ID          string    `json:"id"`
+	ReferenceId string    `json:"referenceId"`
+	Amount      Amount    `json:"amount"`
+	Status      string    `json:"status"`
+	EwalletCode string    `json:"ewalletCode"`
+	RedirectURL string    `json:"redirectUrl"`
+	ExpiredAt   time.Time `json:"expiredAt"`
+	CreatedAt   time.Time `json:"createdAt"`
 }

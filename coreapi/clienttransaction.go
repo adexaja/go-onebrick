@@ -265,13 +265,13 @@ func CreateEwallet(data EWalletRequest) (*Response[EwalletResponseData], *onebri
 }
 
 // Do /payments/gs/top-up/unique-code API
-func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUqniqueCodeResponseData], *onebrick.Error) {
-	resp := &Response[BcaUqniqueCodeResponseData]{}
+func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUniqueCodeResponseData], *onebrick.Error) {
+	resp := &Response[BcaUniqueCodeResponseData]{}
 	headers := make([]map[string]string, 0)
 
 	err := c.HttpClient.Call(
 		http.MethodPost,
-		fmt.Sprintf("%s/payments/gs/top-up/unique-code", c.Env.BaseUrl()),
+		fmt.Sprintf("%s/payments/gs/top-up/unique-code", c.Env.BcaUniqueCodeUrl()),
 		data.PublicAccessToken,
 		c.Options,
 		data,
@@ -285,6 +285,6 @@ func (c *Client) CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUq
 }
 
 // Do /payments/gs/top-up/unique-code API
-func CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUqniqueCodeResponseData], *onebrick.Error) {
+func CreateBCAUniqueCode(data BCAUniqueCodeRequest) (*Response[BcaUniqueCodeResponseData], *onebrick.Error) {
 	return getDefaultClient().CreateBCAUniqueCode(data)
 }

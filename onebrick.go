@@ -70,9 +70,23 @@ var typeString = map[EnvironmentType]string{
 	Production: "https://api.onebrick.io/v2",
 }
 
+var bcaUniqueCodeUrl = map[EnvironmentType]string{
+	Sandbox:    "https://stgapi.onebrick.io/stg/v2",
+	Production: "https://api.onebrick.io/v2",
+}
+
 // BaseUrl To get Onebrick Base URL
 func (e EnvironmentType) BaseUrl() string {
 	for k, v := range typeString {
+		if k == e {
+			return v
+		}
+	}
+	return "undefined"
+}
+
+func (e EnvironmentType) BcaUniqueCodeUrl() string {
+	for k, v := range bcaUniqueCodeUrl {
 		if k == e {
 			return v
 		}
