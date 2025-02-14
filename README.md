@@ -89,4 +89,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Support
 
-For support, please contact [your contact information]
+For support, please contact me@rezki.dev
